@@ -76,11 +76,15 @@ class Blockchain {
         // Block hash with SHA256 using newBlock and converting to a string
         block.hash = SHA256(JSON.stringify(block)).toString();
         /// Validate chain
-        await self.validateChain();
-        // Adding block object to chain
-        self.chain.push(block);
-        self.height++;
-        resolve(block);
+        let invalidBlocks = await this.validateChain();
+        if (invalidBlocks.length === 0) {
+          // Adding block object to chain
+          self.chain.push(block);
+          self.height++;
+          resolve(block);
+        } else {
+          throw new Error(`Chain contains ${invalidBlocks.length} invalid blocks`);
+        }
       } catch (e) {
         reject(e);
       }
@@ -154,9 +158,9 @@ class Blockchain {
     let self = this;
     return new Promise((resolve, reject) => {
       if (!hash) reject(Error('Hash can\'t be empty'));
-      const result = self.chain.filter((block) => block.hash === hash);
-      if (!result || result.length === 0) reject(Error('Hash not found!'));
-      resolve(result[0]);
+      const result = self.chain.find((block) => block.hash === hash);
+      if (!result) reject(Error('Hash not found!'));
+      resolve(result);
     });
   }
 
@@ -168,7 +172,7 @@ class Blockchain {
   getBlockByHeight(height) {
     let self = this;
     return new Promise((resolve, reject) => {
-      let block = self.chain.filter(p => p.height === height)[0];
+      let block = self.chain.find(p => p.height === height);
       if (block) {
         resolve(block);
       } else {

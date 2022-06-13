@@ -9,6 +9,15 @@ class BlockchainController {
   //The constructor receive the instance of the express.js app and the Blockchain class
   constructor(app, blockchainObj) {
     this.app = app;
+    /// Prevent app from exit on error
+    this.app.use(function(err, req, res, next) {
+      // Maybe log the error for later reference?
+      // If this is development, maybe show the stack here in this response?
+      res.status(err.status || 500);
+      res.send({
+        'message': err.message
+      });
+    });
     this.blockchain = blockchainObj;
     // All the endpoints methods needs to be called in the constructor to initialize the route.
     this.getBlockByHeight();
@@ -16,6 +25,7 @@ class BlockchainController {
     this.submitStar();
     this.getBlockByHash();
     this.getStarsByOwner();
+    this.validateChain();
   }
 
   // Enpoint to Get a Block by Height (GET Endpoint)
@@ -113,6 +123,22 @@ class BlockchainController {
       } else {
         return res.status(500).send("Block Not Found! Review the Parameters!");
       }
+    });
+  }
+
+  // Enpoint to Get a Block by Height (GET Endpoint)
+  validateChain() {
+    this.app.get("/validate", async (req, res) => {
+      let invalidBlocks = await this.blockchain.validateChain();
+      if (invalidBlocks.length === 0) {
+        return res.status(200).json({
+          "message": "Chain is OK",
+        });
+      }
+      return res.status(400).json({
+        "message": "Chain is invalid",
+        "blocks": invalidBlocks,
+      });
     });
   }
 

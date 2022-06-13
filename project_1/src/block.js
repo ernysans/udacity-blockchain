@@ -40,20 +40,16 @@ class Block {
     return new Promise((resolve, reject) => {
       try {
         // Save in auxiliary variable the current block hash
-        let blockHash = self.hash;
-        self.hash = null;
+        let clonedBlock = {...self, hash: null};
         // Recalculate the hash of the Block
-        let validBlockHash = SHA256(JSON.stringify(self)).toString();
-        self.hash = validBlockHash;
+        const newHash = SHA256(JSON.stringify(clonedBlock)).toString();
         // Comparing if the hashes changed
-        if (blockHash !== validBlockHash) {
-          // Returning the Block is not valid
-          console.log('Block #' + this.height + ' invalid hash:\n' + blockHash + '<>' + validBlockHash);
-          resolve(false);
-        } else {
-          // Returning the Block is valid
-          resolve(true);
+        const validHash = self.hash === newHash;
+        if (!validHash) {
+          console.error(`Block ${this.height} invalid hash: ${self.hash} ---- ${newHash}`);
         }
+        // Resolve true or false depending if it is valid or not
+        resolve(validHash);
       } catch (e) {
         reject(e);
       }
