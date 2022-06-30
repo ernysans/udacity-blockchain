@@ -1,9 +1,30 @@
-# ND1309 C2 Ethereum Smart Contracts, Tokens and Dapps - Project Starter 
+# ND1309 C2 Ethereum Smart Contracts, Tokens and Dapps
+___
+
+* **Truffle Version:** ^0.8.1
+* **OpenZeppelin:** ^4.7.0
+```json
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.0"
+  }
+}
+```
+* **Your ERC-721 Token Name:** CoolStar
+* **Your ERC-721 Token Symbol:** CSTAR
+* **Your “Token Address” on the Rinkeby Network:** [0x9f48e0d823b8e3968162a2a65360c4ad4dac4ba8](https://rinkeby.etherscan.io/token/0x9f48e0d823b8e3968162a2a65360c4ad4dac4ba8)
+
+## Local Developement
+### Mnemonic phrase:
+Create a file `.secret` on the `project_2` root and add your Metamask secret phrase.
+
+---
+# Ignore everything after this line
+
 **PROJECT: Decentralized Star Notary Service Project** - For this project, you will create a DApp by adding functionality with your smart contract and deploy it on the public testnet.
 
 ### ToDo
 This Starter Code has already implemented the functionalities you implemented in the StarNotary (Version 2) exercise, and have comments in all the files you need to implement your tasks.
-
 
 
 ### Dependencies
