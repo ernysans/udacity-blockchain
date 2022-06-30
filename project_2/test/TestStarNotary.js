@@ -36,7 +36,7 @@ it('lets user1 get the funds after the sale', async () => {
   await instance.putStarUpForSale(starId, starPrice, {from: user1});
   let balanceOfUser1BeforeTransaction = await web3.eth.getBalance(user1);
   await instance.buyStar(starId, {from: user2, value: balance});
-  console.log('Buy start: Success!!!');
+  // console.log('Buy start: Success!!!');
   let balanceOfUser1AfterTransaction = await web3.eth.getBalance(user1);
   let balanceBefore = Number(balanceOfUser1BeforeTransaction) + Number(starPrice);
   let balanceAfter = Number(balanceOfUser1AfterTransaction);
